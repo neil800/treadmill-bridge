@@ -31,7 +31,7 @@ namespace TreadmillBridge.TreadmillClient
 
         public DomyosTreadmillClient(ILogger<DomyosTreadmillClient> logger,
             IVirtualTreadmillService virtualTreadmillService,
-            DeviceInformation device) 
+            DeviceInformation device)
             : base(device)
         {
             _logger = logger;
@@ -123,7 +123,10 @@ namespace TreadmillBridge.TreadmillClient
                 return;
 
             _lastPacket = currentPacket;
-            if (currentPacket.Length != 26)
+            // if (currentPacket.Length != 26)
+            //     return;
+
+            if (currentPacket.Length < 8)
                 return;
 
             var speed = GetSpeedFromPacket(currentPacket);
@@ -175,7 +178,7 @@ namespace TreadmillBridge.TreadmillClient
 
         private static bool GetIsStopPressedFromPacket(byte[] packet)
         {
-            var ba = new BitArray(new [] {packet[25]});
+            var ba = new BitArray(new[] { packet[25] });
             return ba[0] && ba[5];
         }
 
